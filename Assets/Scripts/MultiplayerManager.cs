@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Unity.Services.Core;
 using Unity.Services.Authentication;
@@ -9,6 +10,9 @@ public class MultiplayerManager : MonoBehaviour
     public static MultiplayerManager Instance;
 
     private bool isInitialized = false;
+
+    // Sessions found by the server browser
+    public List<ISessionInfo> availableSessions = new List<ISessionInfo>();
 
     private void Awake()
     {
@@ -46,6 +50,9 @@ public class MultiplayerManager : MonoBehaviour
         }
     }
 
+
+    // HOST
+
     public async void CreateHostSession()
     {
         if (!isInitialized)
@@ -70,6 +77,84 @@ public class MultiplayerManager : MonoBehaviour
         catch (Exception e)
         {
             Debug.LogError("Failed to create session!");
+            Debug.LogException(e);
+        }
+    }
+
+
+    // FIND SESSIONS
+
+    public async void FindSessions()
+    {
+        if (!isInitialized)
+        {
+            Debug.LogError("Unity Services are not initialized yet!");
+            return;
+        }
+
+        try
+        {
+            QuerySessionsOptions options = new QuerySessionsOptions();
+
+            QuerySessionsResults results =
+                await MultiplayerService.Instance.QuerySessionsAsync(options);
+
+            availableSessions.Clear();
+
+            foreach (ISessionInfo session in results.Sessions)
+            {
+                availableSessions.Add(session);
+
+                Debug.Log(
+                    "Session found: " +
+                    session.Id +
+                    " | Max Players: " +
+                    session.MaxPlayers
+                );
+
+                // old code with current players info
+                // Debug.Log(
+                //     "Session found: " +
+                //     session.Id +
+                //     " | Players: " +
+                //     session.CurrentPlayers +
+                //     "/" +
+                //     session.MaxPlayers
+                // );
+
+            }
+
+            Debug.Log("Found " + availableSessions.Count + " sessions.");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Failed to find sessions!");
+            Debug.LogException(e);
+        }
+    }
+
+
+    // JOIN SESSION
+
+    public async void JoinSession(ISessionInfo session)
+    {
+        if (!isInitialized)
+        {
+            Debug.LogError("Unity Services are not initialized yet!");
+            return;
+        }
+
+        try
+        {
+            Debug.Log("Joining session: " + session.Id);
+
+            await MultiplayerService.Instance.JoinSessionByIdAsync(session.Id);
+
+            Debug.Log("Successfully joined session!");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Failed to join session!");
             Debug.LogException(e);
         }
     }
