@@ -5,8 +5,8 @@ public class NetworkStartUI : MonoBehaviour
 
     public GameObject mainMenuPanel;        // panel referance
     public GameObject serverBrowserPanel;   // panel referance
-    public Transform sessionList;
-    public GameObject sessionButtonPrefab;
+    public Transform sessionList;           // panel when prefabs will spawn
+    public GameObject sessionButtonPrefab; // button prefab
 
 
     public void OnHostButton()
