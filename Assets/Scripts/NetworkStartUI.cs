@@ -2,14 +2,29 @@ using UnityEngine;
 
 public class NetworkStartUI : MonoBehaviour
 {
+
+    public GameObject mainMenuPanel;        // panel referance
+    public GameObject serverBrowserPanel;   // panel referance
+
+
     public void OnHostButton()
     {
-        MultiplayerManager.Instance.CreateHostSession();
+        MultiplayerManager.Instance.CreateHostSession(); // create session
     }
 
     public void OnJoinButton()
     {
-        MultiplayerManager.Instance.FindSessions();
+        mainMenuPanel.SetActive(false);                 // disable menu panel
+        serverBrowserPanel.SetActive(true);             // set browser panel active
+
+        MultiplayerManager.Instance.FindSessions();     // find active sessions
+    }
+
+    // back to the main menu panel 
+    public void OnBackButton() 
+    {
+        serverBrowserPanel.SetActive(false);
+        mainMenuPanel.SetActive(true);
     }
 }
 

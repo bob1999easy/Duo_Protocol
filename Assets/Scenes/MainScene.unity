@@ -201,7 +201,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 83100569}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1744258180}
+        m_TargetAssemblyTypeName: NetworkStartUI, Assembly-CSharp
+        m_MethodName: OnBackButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &83100569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1911,6 +1923,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11d216665d45c9941a12a94e3fcfef70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NetworkStartUI
+  mainMenuPanel: {fileID: 1945966209}
+  serverBrowserPanel: {fileID: 1388794809}
 --- !u!1 &1852187226
 GameObject:
   m_ObjectHideFlags: 0
@@ -2192,7 +2206,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
