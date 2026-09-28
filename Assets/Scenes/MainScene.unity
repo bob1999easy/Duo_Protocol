@@ -2457,6 +2457,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LobbyManager
   ShowTopMostFoldoutHeaderGroup: 1
+  minPlayersToStart: 2
 --- !u!1 &1630742931
 GameObject:
   m_ObjectHideFlags: 0
@@ -3199,5 +3200,5 @@ SceneRoots:
   - {fileID: 1744258179}
   - {fileID: 292096969}
   - {fileID: 1630742934}
-  - {fileID: 614457498}
   - {fileID: 1621372164}
+  - {fileID: 614457498}

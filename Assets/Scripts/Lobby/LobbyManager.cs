@@ -3,17 +3,25 @@ using Unity.Netcode;
 
 public class LobbyManager : NetworkBehaviour
 {
+    [SerializeField] private int minPlayersToStart = 2;
+
     public void CheckAllPlayersReady()
     {
         if (!IsServer)
             return;
 
-        bool everyoneReady = true;
+        int connectedPlayers = NetworkManager.Singleton.ConnectedClientsList.Count;
 
-        Debug.Log(
-            "CONNECTED PLAYERS = " +
-            NetworkManager.Singleton.ConnectedClientsList.Count
-        );
+        Debug.Log("CONNECTED PLAYERS = " + connectedPlayers);
+
+        // Nie mozna rozpoczac gry, jesli nie ma wymaganej liczby graczy
+        if (connectedPlayers < minPlayersToStart)
+        {
+            Debug.Log("Not enough players. Waiting for another player.");
+            return;
+        }
+
+        bool everyoneReady = true;
 
         foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
         {
@@ -24,36 +32,17 @@ public class LobbyManager : NetworkBehaviour
 
             if (client.PlayerObject == null)
             {
-                Debug.LogError(
-                    "Client " +
-                    client.ClientId +
-                    " HAS NO PLAYER OBJECT!"
-                );
-
                 everyoneReady = false;
-                continue;
+                break;
             }
-
-            Debug.Log(
-                "Client " +
-                client.ClientId +
-                " PlayerObject = " +
-                client.PlayerObject.name
-            );
 
             LobbyReadySystem readySystem =
                 client.PlayerObject.GetComponent<LobbyReadySystem>();
 
             if (readySystem == null)
             {
-                Debug.LogError(
-                    "Client " +
-                    client.ClientId +
-                    " HAS NO LobbyReadySystem!"
-                );
-
                 everyoneReady = false;
-                continue;
+                break;
             }
 
             Debug.Log(
@@ -66,6 +55,7 @@ public class LobbyManager : NetworkBehaviour
             if (!readySystem.IsReady)
             {
                 everyoneReady = false;
+                break;
             }
         }
 
