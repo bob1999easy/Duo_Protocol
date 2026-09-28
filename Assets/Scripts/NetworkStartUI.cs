@@ -45,6 +45,9 @@ public class NetworkStartUI : MonoBehaviour
                 sessionButtonPrefab,
                 sessionList
             );
+
+            SessionButton sessionButton = button.GetComponent<SessionButton>();
+            sessionButton.Setup(session);
         }
     }
 }
