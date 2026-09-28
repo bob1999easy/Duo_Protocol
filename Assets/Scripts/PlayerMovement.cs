@@ -4,15 +4,24 @@ using Unity.Netcode;
 public class PlayerMovement : NetworkBehaviour
 {
 
-    public float speed = 5f;
+    public float speed = 5f;        // speed of the player
+    private Camera playerCamera;    // camera assign with the player prefab
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        playerCamera = GetComponentInChildren<Camera>();            // at the start find the camera component in the prefab
+
         if (IsOwner)
         {
-            GetComponent<Renderer>().material.color = Color.red;
-        }   
+            GetComponent<Renderer>().material.color = Color.red;    // if you are the owner - you are the player - assign yourself color red (you won't see it)
+
+            playerCamera.enabled = true;                            // enable that camera in your prefab
+        }
+        else
+        {
+            playerCamera.enabled = false;                           // disable every other camera - in prefabs of other players
+        }
     }
 
     // Update is called once per frame
