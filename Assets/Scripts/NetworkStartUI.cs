@@ -50,6 +50,13 @@ public class NetworkStartUI : MonoBehaviour
             sessionButton.Setup(session);
         }
     }
+
+    public async void OnRefreshButton()
+    {
+        await MultiplayerManager.Instance.FindSessions();
+
+        CreateSessionButtons();
+    }
 }
 
 
