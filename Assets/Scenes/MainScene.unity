@@ -1357,7 +1357,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1031680537}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1744258180}
+        m_TargetAssemblyTypeName: NetworkStartUI, Assembly-CSharp
+        m_MethodName: OnHostButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1031680537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2308,7 +2320,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2077991384}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1744258180}
+        m_TargetAssemblyTypeName: NetworkStartUI, Assembly-CSharp
+        m_MethodName: OnJoinButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2077991384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2496,8 +2520,8 @@ SceneRoots:
   - {fileID: 1523603767}
   - {fileID: 649766385}
   - {fileID: 651411046}
-  - {fileID: 1744258179}
   - {fileID: 1852187230}
   - {fileID: 1427035171}
+  - {fileID: 1744258179}
   - {fileID: 292096969}
   - {fileID: 1630742934}
