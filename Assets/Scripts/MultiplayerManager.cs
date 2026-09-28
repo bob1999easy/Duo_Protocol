@@ -81,7 +81,8 @@ public class MultiplayerManager : MonoBehaviour
             Debug.Log("Session ID: " + session.Id);
             Debug.Log("Join Code: " + session.Code);
 
-            networkStartUI.HideCanvas(); // hide canvas in host mode after joining session 
+            networkStartUI.HideCanvas(); // hide canvas in host mode after joining session
+            networkStartUI.ShowLobbyCanvas(); // show lobby canvas after hiding the main ui
         }
         catch (Exception e)
         {
@@ -162,6 +163,7 @@ public class MultiplayerManager : MonoBehaviour
             Debug.Log("Successfully joined session!");
 
             networkStartUI.HideCanvas(); // hide canvas in cliend mode after joining session
+            networkStartUI.ShowLobbyCanvas(); // show lobby canvas after hiding the main ui
         }
         catch (Exception e)
         {

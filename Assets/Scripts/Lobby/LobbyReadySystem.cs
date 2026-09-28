@@ -32,16 +32,7 @@ public class LobbyReadySystem : NetworkBehaviour
         if (!IsOwner)
             return;
 
-        LobbyStatusPanel lobbyUI =
-            FindAnyObjectByType<LobbyStatusPanel>();
-
-        if (lobbyUI != null)
-        {
-            statusText = lobbyUI.statusText;
-            hintText = lobbyUI.hintText;
-
-            UpdateUI(isReady.Value);
-        }
+        TryFindLobbyUI(); // find lobby canvas
     }
 
     private void Update()
@@ -52,6 +43,8 @@ public class LobbyReadySystem : NetworkBehaviour
         // disable ability to press "P" after changing to the GameScene from MainScene - so it won't show it in the console 
         if (SceneManager.GetActiveScene().name != "MainScene")
             return;
+
+        TryFindLobbyUI(); // find lobby canvas
 
         if (Keyboard.current != null &&
             Keyboard.current.pKey.wasPressedThisFrame)
@@ -103,6 +96,23 @@ public class LobbyReadySystem : NetworkBehaviour
         {
             statusText.text = "NOT READY";
             hintText.text = "Press [P] to Ready";
+        }
+    }
+
+    // method for finding the lobby ui
+    private void TryFindLobbyUI()
+    {
+        if (statusText != null && hintText != null)
+            return;
+
+        LobbyStatusPanel lobbyUI = FindAnyObjectByType<LobbyStatusPanel>();
+
+        if (lobbyUI != null)
+        {
+            statusText = lobbyUI.statusText;
+            hintText = lobbyUI.hintText;
+
+            UpdateUI(isReady.Value);
         }
     }
 }

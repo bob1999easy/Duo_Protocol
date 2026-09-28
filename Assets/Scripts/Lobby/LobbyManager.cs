@@ -28,13 +28,12 @@ public class LobbyManager : NetworkBehaviour
             LobbyStatusPanel lobbyUI =
                 FindAnyObjectByType<LobbyStatusPanel>();
 
-            if (lobbyUI != null)
+            if (IsHost)
             {
-                statusText = lobbyUI.statusText;
-                hintText = lobbyUI.hintText;
+                TryFindLobbyUI(); // find lobby canvas
             }
 
-            UpdateHostUI(allPlayersReady.Value);
+            //UpdateHostUI(allPlayersReady.Value);
         }
     }
 
@@ -47,6 +46,8 @@ public class LobbyManager : NetworkBehaviour
     {
         if (!IsHost)
             return;
+
+        TryFindLobbyUI(); // find lobby canvas
 
         if (!allPlayersReady.Value)
             return;
@@ -183,5 +184,23 @@ public class LobbyManager : NetworkBehaviour
             "GameScene",
             LoadSceneMode.Single
         );
+    }
+
+    // for lobby canvas
+    private void TryFindLobbyUI()
+    {
+        if (statusText != null && hintText != null)
+            return;
+
+        LobbyStatusPanel lobbyUI =
+            FindAnyObjectByType<LobbyStatusPanel>();
+
+        if (lobbyUI != null)
+        {
+            statusText = lobbyUI.statusText;
+            hintText = lobbyUI.hintText;
+
+            UpdateHostUI(allPlayersReady.Value);
+        }
     }
 }
