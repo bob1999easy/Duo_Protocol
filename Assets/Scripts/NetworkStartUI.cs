@@ -5,7 +5,7 @@ public class NetworkStartUI : MonoBehaviour
 
     public GameObject mainMenuPanel;        // panel referance
     public GameObject serverBrowserPanel;   // panel referance
-    public Transform sessionList;           // panel when prefabs will spawn
+    public Transform sessionList;           // panel when prefabs will
     public GameObject sessionButtonPrefab; // button prefab
 
 
@@ -39,15 +39,19 @@ public class NetworkStartUI : MonoBehaviour
 
         var sessions = MultiplayerManager.Instance.availableSessions; // check active list of sessions
 
-        foreach (var session in sessions)       // create one prefab for each active session 
+        // create one prefab for each active session 
+        for (int i = 0; i < sessions.Count; i++)
         {
+            var session = sessions[i];
+
             GameObject button = Instantiate(
                 sessionButtonPrefab,
                 sessionList
             );
 
             SessionButton sessionButton = button.GetComponent<SessionButton>();
-            sessionButton.Setup(session);
+
+            sessionButton.Setup(session, i + 1);
         }
     }
 

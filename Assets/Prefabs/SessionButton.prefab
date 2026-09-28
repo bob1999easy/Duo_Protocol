@@ -269,6 +269,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a267ac013edc5341a00c1e223ea852d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SessionButton
+  gameName: {fileID: 2562845298832152115}
+  playerCount: {fileID: 618730684621951193}
 --- !u!1 &3470319896107892302
 GameObject:
   m_ObjectHideFlags: 0
