@@ -2,6 +2,7 @@ using UnityEngine;
 using Unity.Netcode;
 using TMPro;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement; // for "P" key while changing scenes
 
 public class LobbyReadySystem : NetworkBehaviour
 {
@@ -46,6 +47,10 @@ public class LobbyReadySystem : NetworkBehaviour
     private void Update()
     {
         if (!IsOwner)
+            return;
+
+        // disable ability to press "P" after changing to the GameScene from MainScene - so it won't show it in the console 
+        if (SceneManager.GetActiveScene().name != "MainScene")
             return;
 
         if (Keyboard.current != null &&
