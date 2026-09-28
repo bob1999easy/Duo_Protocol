@@ -14,6 +14,8 @@ public class LobbyReadySystem : NetworkBehaviour
         NetworkVariableWritePermission.Server
     );
 
+    public bool IsReady => isReady.Value;
+
     private void OnEnable()
     {
         isReady.OnValueChanged += OnReadyStateChanged;
@@ -26,17 +28,18 @@ public class LobbyReadySystem : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (IsOwner)
+        if (!IsOwner)
+            return;
+
+        LobbyStatusPanel lobbyUI =
+            FindAnyObjectByType<LobbyStatusPanel>();
+
+        if (lobbyUI != null)
         {
-            LobbyStatusPanel lobbyUI = FindAnyObjectByType<LobbyStatusPanel>();
+            statusText = lobbyUI.statusText;
+            hintText = lobbyUI.hintText;
 
-            if (lobbyUI != null)
-            {
-                statusText = lobbyUI.statusText;
-                hintText = lobbyUI.hintText;
-
-                UpdateUI(isReady.Value);
-            }
+            UpdateUI(isReady.Value);
         }
     }
 
@@ -45,7 +48,8 @@ public class LobbyReadySystem : NetworkBehaviour
         if (!IsOwner)
             return;
 
-        if (Keyboard.current != null && Keyboard.current.pKey.wasPressedThisFrame)
+        if (Keyboard.current != null &&
+            Keyboard.current.pKey.wasPressedThisFrame)
         {
             ToggleReadyServerRpc();
         }
@@ -55,6 +59,21 @@ public class LobbyReadySystem : NetworkBehaviour
     private void ToggleReadyServerRpc()
     {
         isReady.Value = !isReady.Value;
+
+        Debug.Log(
+            "Player " +
+            OwnerClientId +
+            " READY = " +
+            isReady.Value
+        );
+
+        LobbyManager lobbyManager =
+            FindAnyObjectByType<LobbyManager>();
+
+        if (lobbyManager != null)
+        {
+            lobbyManager.CheckAllPlayersReady();
+        }
     }
 
     private void OnReadyStateChanged(bool oldValue, bool newValue)
