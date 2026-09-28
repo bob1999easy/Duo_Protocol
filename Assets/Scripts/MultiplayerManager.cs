@@ -13,6 +13,9 @@ public class MultiplayerManager : MonoBehaviour
 
     private bool isInitialized = false;
 
+    private NetworkStartUI networkStartUI;  // referamce script networkstartui
+
+
     // Sessions found by the server browser
     public List<ISessionInfo> availableSessions = new List<ISessionInfo>();
 
@@ -31,6 +34,8 @@ public class MultiplayerManager : MonoBehaviour
 
     private async void Start()
     {
+        networkStartUI = FindAnyObjectByType<NetworkStartUI>();  // find script 
+
         try
         {
             await UnityServices.InitializeAsync();
@@ -75,6 +80,8 @@ public class MultiplayerManager : MonoBehaviour
             Debug.Log("Session created!");
             Debug.Log("Session ID: " + session.Id);
             Debug.Log("Join Code: " + session.Code);
+
+            networkStartUI.HideCanvas(); // hide canvas in host mode after joining session 
         }
         catch (Exception e)
         {
@@ -153,6 +160,8 @@ public class MultiplayerManager : MonoBehaviour
             await MultiplayerService.Instance.JoinSessionByIdAsync(session.Id);
 
             Debug.Log("Successfully joined session!");
+
+            networkStartUI.HideCanvas(); // hide canvas in cliend mode after joining session
         }
         catch (Exception e)
         {

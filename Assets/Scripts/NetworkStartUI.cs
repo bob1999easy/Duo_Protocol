@@ -7,6 +7,7 @@ public class NetworkStartUI : MonoBehaviour
     public GameObject serverBrowserPanel;   // panel referance
     public Transform sessionList;           // panel when prefabs will
     public GameObject sessionButtonPrefab; // button prefab
+    public GameObject canvas;               // referance to main canvas to be able to hide it after joining lobby
 
 
     public void OnHostButton()
@@ -60,6 +61,11 @@ public class NetworkStartUI : MonoBehaviour
         await MultiplayerManager.Instance.FindSessions();
 
         CreateSessionButtons();
+    }
+
+    public void HideCanvas()
+    {
+        canvas.SetActive(false);
     }
 }
 

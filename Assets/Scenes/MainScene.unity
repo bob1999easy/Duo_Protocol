@@ -2042,6 +2042,7 @@ MonoBehaviour:
   serverBrowserPanel: {fileID: 1388794809}
   sessionList: {fileID: 1418536043}
   sessionButtonPrefab: {fileID: 2488323936548061813, guid: bfba698cac868054aa63d02dae7df2f8, type: 3}
+  canvas: {fileID: 292096965}
 --- !u!1 &1852187226
 GameObject:
   m_ObjectHideFlags: 0
