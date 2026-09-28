@@ -5,6 +5,8 @@ public class NetworkStartUI : MonoBehaviour
 
     public GameObject mainMenuPanel;        // panel referance
     public GameObject serverBrowserPanel;   // panel referance
+    public Transform sessionList;
+    public GameObject sessionButtonPrefab;
 
 
     public void OnHostButton()
@@ -12,12 +14,13 @@ public class NetworkStartUI : MonoBehaviour
         MultiplayerManager.Instance.CreateHostSession(); // create session
     }
 
-    public void OnJoinButton()
+    public async void OnJoinButton()
     {
         mainMenuPanel.SetActive(false);                 // disable menu panel
         serverBrowserPanel.SetActive(true);             // set browser panel active
 
-        MultiplayerManager.Instance.FindSessions();     // find active sessions
+        await MultiplayerManager.Instance.FindSessions();     // find active sessions
+        CreateSessionButtons();
     }
 
     // back to the main menu panel 
@@ -25,6 +28,24 @@ public class NetworkStartUI : MonoBehaviour
     {
         serverBrowserPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
+    }
+
+    public void CreateSessionButtons()
+    {
+        foreach (Transform child in sessionList)
+        {
+            Destroy(child.gameObject); // deletes last list
+        }
+
+        var sessions = MultiplayerManager.Instance.availableSessions; // check active list of sessions
+
+        foreach (var session in sessions)       // create one prefab for each active session 
+        {
+            GameObject button = Instantiate(
+                sessionButtonPrefab,
+                sessionList
+            );
+        }
     }
 }
 

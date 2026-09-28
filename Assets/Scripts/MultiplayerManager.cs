@@ -5,6 +5,8 @@ using Unity.Services.Core;
 using Unity.Services.Authentication;
 using Unity.Services.Multiplayer;
 
+using System.Threading.Tasks;
+
 public class MultiplayerManager : MonoBehaviour
 {
     public static MultiplayerManager Instance;
@@ -84,7 +86,7 @@ public class MultiplayerManager : MonoBehaviour
 
     // FIND SESSIONS
 
-    public async void FindSessions()
+    public async Task FindSessions()
     {
         if (!isInitialized)
         {
