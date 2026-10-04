@@ -32,7 +32,11 @@ public class EnemyAI : NetworkBehaviour
         // Move toward the selected - closest -  player
         if (targetPlayer != null)
         {
-            Vector3 direction = (targetPlayer.position - transform.position).normalized;
+            Vector3 direction = targetPlayer.position - transform.position;
+
+            direction.y = 0f;
+
+            direction.Normalize();
 
             transform.position += direction * speed * Time.deltaTime;
         }
