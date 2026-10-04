@@ -2457,7 +2457,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LobbyManager
   ShowTopMostFoldoutHeaderGroup: 1
-  minPlayersToStart: 2
+  minPlayersToStart: 1
 --- !u!1 &1630742931
 GameObject:
   m_ObjectHideFlags: 0
