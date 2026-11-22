@@ -21,6 +21,12 @@ public class MultiplayerManager : MonoBehaviour
 
     private void Awake()
     {
+
+        // limit the frame rate so the build doesn't use much of the CPU
+        QualitySettings.vSyncCount = 0;      // vSync overrides targetFrameRate if it is on
+        Application.targetFrameRate = 60;
+
+
         if (Instance == null)
         {
             Instance = this;

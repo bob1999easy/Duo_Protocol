@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5709095884865251129}
   - component: {fileID: 959727694529972254}
   - component: {fileID: 7064823561426228621}
+  - component: {fileID: 1474862778103021179}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -56,7 +57,7 @@ MonoBehaviour:
   Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
-  m_InScenePlaced: 1
+  m_InScenePlaced: 0
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 0
   SpawnWithObservers: 1
@@ -139,6 +140,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   ShowTopMostFoldoutHeaderGroup: 1
   maxHealth: 3
+--- !u!114 &1474862778103021179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1954597576964740549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0672671bd0d8cee4ba10a13189f1921d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttack
+  ShowTopMostFoldoutHeaderGroup: 1
+  damage: 20
+  attackRange: 2
+  attackCooldown: 0.3
 --- !u!1 &2389579858920347570
 GameObject:
   m_ObjectHideFlags: 0

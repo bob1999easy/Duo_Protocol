@@ -298,6 +298,7 @@ GameObject:
   - component: {fileID: 1816714888520885685}
   - component: {fileID: 2441749076302477266}
   - component: {fileID: -2807094342552341616}
+  - component: {fileID: 651791615919708742}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -561,6 +562,21 @@ MonoBehaviour:
   tracerDuration: 0.05
   hitEffectPrefab: {fileID: 4127672386145034493, guid: 021fe2b36759090489a1cf7fd6b304bf, type: 3}
   muzzleOffset: {x: 0.3, y: -0.25, z: 0.5}
+--- !u!114 &651791615919708742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1910752839954171544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0282bf5a8544bf44c91b82e42358ac1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  ShowTopMostFoldoutHeaderGroup: 1
+  maxHealth: 100
+  invulnerableTime: 0.5
 --- !u!1 &3281122221410719246
 GameObject:
   m_ObjectHideFlags: 0

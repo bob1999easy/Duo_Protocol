@@ -19,6 +19,8 @@ public class PlayerMovement : NetworkBehaviour
     private float jumpHeight = 1.5f;
     private float gravity = -20f;
 
+    private PlayerHealth playerHealth;
+
     // network variable for synchronizing animation speed
     private NetworkVariable<float> networkSpeed = new NetworkVariable<float>(
         0f,
@@ -48,13 +50,15 @@ public class PlayerMovement : NetworkBehaviour
         {
             if (playerCamera != null) playerCamera.enabled = false; // disable camera on remote players
         }
+
+        playerHealth = GetComponent<PlayerHealth>();
     }
 
     // Update is called once per frame
     void Update()
     {
         // MOVEMENT & INPUT (Owner only)
-        if (IsOwner)
+        if (IsOwner && (playerHealth == null || !playerHealth.IsDead))
         {
             float horizontal = Input.GetAxisRaw("Horizontal");
             float vertical = Input.GetAxisRaw("Vertical");
@@ -104,6 +108,10 @@ public class PlayerMovement : NetworkBehaviour
                     playerCamera.transform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
                 }
             }
+        }
+        else if (IsOwner)
+        {
+            networkSpeed.Value = 0f; // dead: stop the walking animation
         }
 
         // ANIMATION UPDATE (Runs for everyone, owner and clients)

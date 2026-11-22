@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using TMPro;
@@ -11,10 +12,13 @@ public class GameManager : NetworkBehaviour
 
     [Header("UI")]
     [SerializeField] private TMP_Text objectiveText;   // "KILL THEM ALL!"
-    [SerializeField] private TMP_Text timerText;       // timer
-    [SerializeField] private TMP_Text enemiesLeftText; // Enemies left: xxx
-    [SerializeField] private TMP_Text resultText;      // YOU WON! + time
-    [SerializeField] private TMP_Text hintText;        // [R] Restart and [Q] Quit
+    [SerializeField] private TMP_Text timerText;       // 00:12.3
+    [SerializeField] private TMP_Text enemiesLeftText; // Enemies left: 5
+    [SerializeField] private TMP_Text resultText;      // YOU WON! / YOU LOST!
+    [SerializeField] private TMP_Text hintText;        // [R] Restart  [Q] Quit
+
+    [Header("Spawn")]
+    [SerializeField] private Transform[] spawnPoints;  // optional: one per player
 
     private NetworkVariable<int> enemiesLeft = new NetworkVariable<int>(
         0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
@@ -26,6 +30,9 @@ public class GameManager : NetworkBehaviour
         0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
     private NetworkVariable<bool> gameOver = new NetworkVariable<bool>(
+        false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+    private NetworkVariable<bool> won = new NetworkVariable<bool>(
         false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
     public bool IsGameOver => gameOver.Value;
@@ -56,7 +63,18 @@ public class GameManager : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if (IsServer)
+        {
             StartCoroutine(InitRoutine());
+
+            // when all players finished loading the scene, reset them
+            NetworkManager.SceneManager.OnLoadEventCompleted += OnSceneLoadCompleted;
+        }
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        if (IsServer && NetworkManager != null && NetworkManager.SceneManager != null)
+            NetworkManager.SceneManager.OnLoadEventCompleted -= OnSceneLoadCompleted;
     }
 
     private IEnumerator InitRoutine()
@@ -66,6 +84,46 @@ public class GameManager : NetworkBehaviour
 
         enemiesLeft.Value = FindObjectsByType<EnemyHealth>(FindObjectsSortMode.None).Length;
         startTime.Value = NetworkManager.ServerTime.Time;
+    }
+
+    private void OnSceneLoadCompleted(
+        string sceneName,
+        LoadSceneMode loadSceneMode,
+        List<ulong> clientsCompleted,
+        List<ulong> clientsTimedOut)
+    {
+        ResetPlayers();
+    }
+
+    // player objects survive scene changes, so health (and position) must be reset by hand
+    private void ResetPlayers()
+    {
+        if (!IsServer)
+            return;
+
+        int index = 0;
+
+        foreach (var client in NetworkManager.ConnectedClientsList)
+        {
+            if (client.PlayerObject == null)
+                continue;
+
+            PlayerHealth hp = client.PlayerObject.GetComponent<PlayerHealth>();
+
+            if (hp == null)
+                continue;
+
+            bool hasSpawn = spawnPoints != null && spawnPoints.Length > 0;
+            Transform spawn = hasSpawn ? spawnPoints[index % spawnPoints.Length] : null;
+
+            hp.ResetPlayer(
+                hasSpawn ? spawn.position : Vector3.zero,
+                hasSpawn ? spawn.rotation : Quaternion.identity,
+                hasSpawn
+            );
+
+            index++;
+        }
     }
 
     // called by EnemyHealth on the server
@@ -79,8 +137,31 @@ public class GameManager : NetworkBehaviour
         if (enemiesLeft.Value <= 0)
         {
             finalTime.Value = Elapsed;
+            won.Value = true;
             gameOver.Value = true;
         }
+    }
+
+    // called by PlayerHealth on the server
+    public void CheckAllPlayersDead()
+    {
+        if (!IsServer || gameOver.Value)
+            return;
+
+        foreach (var client in NetworkManager.ConnectedClientsList)
+        {
+            if (client.PlayerObject == null)
+                continue;
+
+            PlayerHealth hp = client.PlayerObject.GetComponent<PlayerHealth>();
+
+            if (hp != null && !hp.IsDead)
+                return; // someone is still alive
+        }
+
+        finalTime.Value = Elapsed;
+        won.Value = false;
+        gameOver.Value = true;
     }
 
     private void Update()
@@ -99,7 +180,7 @@ public class GameManager : NetworkBehaviour
         if (Keyboard.current.qKey.wasPressedThisFrame)
         {
 #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false; // for in engine use
+            UnityEditor.EditorApplication.isPlaying = false;
 #else
             Application.Quit();
 #endif
@@ -123,7 +204,11 @@ public class GameManager : NetworkBehaviour
         if (over)
         {
             if (resultText != null)
-                resultText.text = "YOU WON!\nTime: " + FormatTime(finalTime.Value);
+            {
+                resultText.text = won.Value
+                    ? "YOU WON!\nTime: " + FormatTime(finalTime.Value)
+                    : "YOU LOST!\nEnemies left: " + enemiesLeft.Value;
+            }
 
             if (hintText != null)
                 hintText.text = IsServer

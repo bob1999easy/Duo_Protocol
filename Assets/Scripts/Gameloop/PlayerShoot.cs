@@ -19,9 +19,12 @@ public class PlayerShoot : NetworkBehaviour
     private float nextShotTime;
     private float tracerHideTime;
 
+    private PlayerHealth playerHealth;
+
     public override void OnNetworkSpawn()
     {
         playerCamera = GetComponentInChildren<Camera>();
+        playerHealth = GetComponent<PlayerHealth>();
 
         if (tracer != null)
             tracer.enabled = false;
