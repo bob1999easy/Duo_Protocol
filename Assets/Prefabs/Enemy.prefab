@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4623084065873831691}
   - component: {fileID: 5709095884865251129}
   - component: {fileID: 959727694529972254}
+  - component: {fileID: 7064823561426228621}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -47,8 +48,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2124086793
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 2299131790
+  InScenePlacedSourceGlobalObjectIdHash: 2124086793
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -123,6 +124,20 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   speed: 2
   checkEveryFrames: 10
+--- !u!114 &7064823561426228621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1954597576964740549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a16839437dbc54ba98511d8e5fa4cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
+  ShowTopMostFoldoutHeaderGroup: 1
+  maxHealth: 3
 --- !u!1 &8680488183046293829
 GameObject:
   m_ObjectHideFlags: 0
